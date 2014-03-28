@@ -1,15 +1,22 @@
 {
-  "name": "chat-example",
+  "name": "test-node",
   "version": "0.0.0",
-  "description": "A chat example to showcase how to use `socket.io` with a static `express` server",
+  "description": "",
   "main": "server.js",
-  "repository": "",
-  "author": "Mostafa Eweda <mostafa@c9.io>",
+  "repository": "somenode",
+  "author": "Dennis Meyer",
   "dependencies": {
     "async": "~0.2.8",
     "express": "~3.2.4",
     "socket.io": "~0.9.14",
     "mongodb" : "*",
-    "mongoose" : "*"
+    "mongoose" : "*",
+    "passport" : "~0.1.17", 		
+    "passport-local" : "~0.1.6", 	
+    "passport-facebook" : "~1.0.2", 
+    "passport-twitter" : "~1.0.2", 	
+    "passport-google-oauth" : "~0.1.5",
+    "bcrypt-nodejs" : "latest",
+    "ejs" : "~0.8.5"
   }
 }
