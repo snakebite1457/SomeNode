@@ -2,39 +2,58 @@
 
 // set up ======================================================================
 // get all the tools we need
-var express  = require('express');
-var app      = express();
-var mongoose = require('mongoose');
-var passport = require('passport');
-var port     = process.env.PORT || 3000;
-var ip       = process.env.IP || "0.0.0.0";
+var express        = require('express');
+var mongoose       = require('mongoose');
+var passport       = require('passport');
+var flash          = require('connect-flash');
+var path           = require('path');
+var lessMiddleware = require('less-middleware');
+var config         = require('konphyg')(__dirname + "/config");
+var app            = express();
 
-// configuration ===============================================================
-mongoose.connect(ip); // connect to our database
+// test db acces ===============================================================
+mongoose.connect(config("database").managemantUrl);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'mongodb connection error: '));
+db.once('open', function callback() {
+    console.log("mongodb connection established to " + config("database").managemantUrl);
+});
 
-require('./config/passport')(passport); // pass passport for configuration
+require('./api/passport')(passport); // pass passport for configuration
 
-app.configure(function() {
+app.set('port', config("server").port);
+app.set('views', path.join(__dirname, "views"));
+app.set('view engine', 'jade');
 
-	// set up our express application
-	app.use(express.logger('dev')); // log every request to the console
-	app.use(express.cookieParser()); // read cookies (needed for auth)
-	app.use(express.bodyParser()); // get information from html forms
-    app.use(express.static(__dirname + '/client'));
-    
-    app.set('view engine', 'ejs'); // set up ejs for templating
+app.use(flash());
+app.use(express.logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.methodOverride());
+app.use(express.cookieParser('your secret here'));
+app.use(express.session());
+app.use(app.router);
+app.use(lessMiddleware(__dirname + '/client'));
+app.use(express.static(__dirname + '/client'));
+app.set("jsonp callback", true);
 
-	// required for passport
-	app.use(express.session({ secret: 'secretkey' })); // session secret
-	app.use(passport.initialize());
-	app.use(passport.session()); // persistent login sessions
+// required for passport
+app.use(express.session({ secret: 'secretkey' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
 
+
+app.configure('development', function () {
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('production', function () {
+    app.use(express.errorHandler());
+});
+
+app.listen(config("server").port, function () {
+    console.log("express server listening on port %d ", config("server").port);
 });
 
 // routes ======================================================================
-require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
-
-
-app.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0",  function() {
-  console.log("Server listening at", ip + ":" + port);
-});
+require('./controllers')(app, passport); // load our routes and pass in our app and fully configured passport

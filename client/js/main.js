@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+/*$( document ).ready(function() {
     
     $("#loginform").submit( function (event) {
        $.post("/login", $("#loginform").serialize() , function(res) {
@@ -11,5 +11,26 @@ $( document ).ready(function() {
            
        });
     });
+
+    $.growl();
     
+});*/
+
+
+require(["jquery", "slingle"], function($, Slingle) {
+    // okay the main application is loaded now
+
+    // disable the loading animation
+    var container = document.getElementById("initialLoadingAnimation");
+    $(container).remove();
+
+    // show the main content of the page
+    $("#dynamic-content").slideDown(function() {
+        Slingle.init({
+            globalLoadingSelector: "#topNavigation",
+            initialPage: "",
+            main_container: "#main-container",
+            handleInitialLoad: true
+        });
+    });
 });
