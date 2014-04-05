@@ -1,0 +1,14 @@
+{
+  "name": "bootstrap-growl",
+  "homepage": "https://github.com/mouse0270/bootstrap-growl",
+  "_release": "38997c76a0",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "38997c76a002ed3c660f5706906b7bf1b403f311"
+  },
+  "_source": "https://github.com/mouse0270/bootstrap-growl.git",
+  "_target": "*",
+  "_originalSource": "https://github.com/mouse0270/bootstrap-growl.git",
+  "_direct": true
+}

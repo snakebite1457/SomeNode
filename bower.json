@@ -1,0 +1,28 @@
+{
+  "name": "SomeNode",
+  "version": "0.0.1",
+  "authors": [
+    "snakebite1457 <dennis.mail206@gmail.com>"
+  ],
+  "description": "SomeNode project",
+  "main": "server.js",
+  "license": "commercial",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "fontawesome": "~4.0.3",
+    "hasher": "~1.2.0",
+    "requirejs": "~2.1.11",
+    "spinjs": "~2.0.0",
+    "require-css": "~0.1.2",
+    "bootstrap-growl": "~1.0.6"
+  }
+}
