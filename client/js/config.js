@@ -3,14 +3,14 @@ requirejs.config({
     paths: {
         app: "main",
         slingle: "lib/slingle",
-        bootstrap: "../bower_components/bootstrap/dist/js/bootstrap",
-        jquery: "../bower_components/jquery/dist/jquery",
-        requirejs: "../bower_components/requirejs/require",
-        spinjs: "../bower_components/spinjs/jquery.spin",
-        spin: "../bower_components/spinjs/spin",
-        growl: "../bower_components/bootstrap-growl/bootstrap-growl",
-        hasher: "../bower_components/hasher/dist/js/hasher",
-        signals: "../bower_components/js-signals/dist/signals"
+        bootstrap: "../components/bootstrap/dist/js/bootstrap",
+        jquery: "../components/jquery/dist/jquery",
+        requirejs: "../components/requirejs/require",
+        spinjs: "../components/spinjs/jquery.spin",
+        spin: "../components/spinjs/spin",
+        growl: "../components/bootstrap-growl/bootstrap-growl",
+        hasher: "../components/hasher/dist/js/hasher",
+        signals: "../components/js-signals/dist/signals"
     },
     shim: {
         bootstrap: {
@@ -44,7 +44,7 @@ requirejs.config({
     // this is required for require-css plugin to map css!/ routes
     map: {
         '*': {
-            'css': '../bower_components/require-css/css'
+            'css': '../components/require-css/css'
         }
     }
 });
