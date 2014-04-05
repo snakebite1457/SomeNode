@@ -51,6 +51,7 @@ exports.error = function(res, params) {
     }, params));
 }
 
+
 exports.location = function(res, url, params) {
     res.json(extend({
         type: "location",

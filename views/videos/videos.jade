@@ -1,23 +1,12 @@
 //
    Created by dennis on 4/1/14.
 
-table.table.table-hover.table-striped
-    thead
-        tr
-            th Server name
-            th Port
-            th Services
-            th Ip address
-            th
-    tbody
-        each video in videos
-            tr
-                td
-                    !{video.name}
-                td.text-right.table-actions
-                    button.btn.btn-xs.btn-primary(type="button", data-role="action", data-params='id=' + video._id, data-target="")
-                        i.fa.fa-search.fa-fw
-                        = '  Details'
-                    button.btn.btn-xs.btn-danger(type="button", data-role="action", data-params='id=' + video._id, data-target="")
-                        i.fa.fa-minus-circle.fa-fw
-                        = '  Delete server'
+.container
+    .row
+        each item in data
+            .panel-group(id = 'accordion' + item)
+                .panel.panel-default
+                    .panel-heading
+                        //img(src='http://placehold.it/100x30', alt='country flag', style='float: left; margin: 3px 10px 0 3px; text-align: center;')
+                        a.accordion-toggle(data-toggle='collapse', href='#collapse' + item, data-parent='#accordion' + item) !{item}
+                    div(id = 'collapse' + item, data-role='container', data-source='/videos/getAllVideosPerGenre?value=' + item + '&videoSearchAttr=' + videoSearchAttr).apanel-collapse.collapse

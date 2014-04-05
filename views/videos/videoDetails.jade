@@ -1,15 +1,13 @@
-.col-md-12
-    .container-fluid
-        .row
-            .page-header
-                .row
-                    h1.pull-left
-                        = server.displayName
-                        small   the nodehost gods answer your request
-                    span.pull-right.header-controls
-                        a.btn.btn-default(href="/videos", data-role="navigate")
-                            i.fa.fa-fw.fa-backward
-                            = 'Back to overview'
-                        a.btn.btn-primary.btn-lg
-                            i.fa.fa-fw.fa-wrench
-                            = 'Manage server'
+.panel-body
+    table.table.table-striped.table-condensed
+        thead
+            tr
+                th Title
+                th ASIN
+                th ean
+        tbody
+            each video in videos
+                tr
+                    td !{video.itemAttributes.title}
+                    td !{video.asin}
+                    td !{video.itemAttributes.ean}

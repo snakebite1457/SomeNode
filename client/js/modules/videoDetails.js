@@ -23,11 +23,10 @@ define(["jquery", "bootstrap"], function($) {
 
         }
 
-        this.querySystemDetails = function(targetServer, cb) {
+        this.queryVideoDetails = function(cb) {
             $.ajax({
                 type: "get",
-                url: "",
-                headers: { "x-target-server": targetServer },
+                url: "/videos/videos",
                 success: function (data) {
                     cb(null, data);
                 },

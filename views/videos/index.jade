@@ -1,12 +1,27 @@
-//
-   Created by dennis on 4/1/14.
 
-table.table.table-hover.table-striped
-    thead
-        tr
-            th Server name
-            th Port
-            th Services
-            th Ip address
-            th
-    tbody
+
+.jumbotron(style='margin-top:20px')
+    .container
+        h1 Hello User!
+        p
+            | This is your video area. Here can you see all of your videos. You can add additional videos or remove and modify it. Have fun bro ;)
+        p
+            a.btn.btn-primary.btn-lg(role='button') Learn more »
+.col-md-12
+    .container-fluid
+        .row
+            .page-header
+                .row
+                    h1.pull-left
+                        = 'Videos'
+                        small   all videos
+                    span.pull-right
+                        .btn-group
+                            a.btn.btn-primary.btn-lg(href="/servers/manage")
+                                i.fa.fa-fw.fa-search
+                                = 'Search Videos'
+                            a.btn.btn-primary.btn-lg(data-module="modules/wizards/addserver", data-html-source="/servers/addServerWizard", data-append="body", data-load='click')
+                                i.fa.fa-fw.fa-plus-circle
+                                = 'Add Video'
+        .row
+            div(data-role='container', data-source='/videos/getAllDistinctAttr?videoSearchAttr=' + videoSearchAttr)

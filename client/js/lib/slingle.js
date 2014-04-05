@@ -9,11 +9,11 @@ define(["jquery", "bootstrap", "spinjs", "hasher", "growl"], function ($, _boots
         this.configureGrowl = function () {
             $.growl.default_options = {
                 ele: "body",
-                type: "info",
+                //type: "info",
                 allow_dismiss: true,
                 position: {
-                    from: "top",
-                    align: "center"
+                    from: "bottom",
+                    align: "right"
                 },
                 offset: 20,
                 spacing: 10,
@@ -376,6 +376,8 @@ define(["jquery", "bootstrap", "spinjs", "hasher", "growl"], function ($, _boots
             me.setGlobalAjaxAnimation();
             me.configureGrowl();
             me.parseDataAttributes("body");
+            //me.parseMessages(JSON.parse($('#messages').val()));
+
 
             hasher.changed.add(me.handleChangedHash);
             hasher.initialized.add(me.handleInitialHash);
