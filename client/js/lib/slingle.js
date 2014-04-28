@@ -1,10 +1,11 @@
 window.slingle = null;
 
-define(["jquery", "bootstrap", "spinjs", "hasher", "growl"], function ($, _bootstrap, Spinner, hasher) {
+define(["jquery", "bootstrap", "spinjs", "hasher", "growl", "bullseye"], function ($, _bootstrap, Spinner, hasher) {
 
     var cl = function Slingle() {
         var me = this;
         this.hasher = hasher;
+        this._listeners = {};
 
         this.configureGrowl = function () {
             $.growl.default_options = {
@@ -94,6 +95,75 @@ define(["jquery", "bootstrap", "spinjs", "hasher", "growl"], function ($, _boots
 
                 });
             });
+
+            // #########################################################################################################
+            // ## reload given data container with other data-source
+            // #########################################################################################################
+
+            $(container).find("a[data-role=container-reload]").each(function (elem) {
+
+                var form = $(this).attr('data-form');
+                var source = $(this).data('source');
+                var container = $($(this).data('container'));
+                var reloadOnce = $(this).data('reload-once');
+                var target = $(this);
+
+
+                $(target).on('click', function (e) {
+                    //me.fire({ type: "beforeContainerReloadRefresh" });
+                    //container.html(null);
+                    container.data('role', null);
+
+                    if (reloadOnce == true || reloadOnce === true) {
+                        target.append('<i class="fa fa-spinner fa-spin fa-lg fa-fw" />');
+                        target.data('reload-once', null);
+                        target.data('role', null);
+                        target.off('click');
+                    } else {
+                        container.spin();
+                    }
+
+                    var formData;
+                    if (form != 'undefined') {
+                        formData = $(form).serialize();
+                    }
+
+                    $.get(source, formData, function (result) {
+                        if (result.type == "view") {
+                            //target.find(".fa-spin").remove();
+
+                            $(container).spin(false);
+                            container.html(result.content);
+                            me.parseMessages(result.messages);
+                            me.parseDataAttributes(container);
+                        }
+                    });
+                });
+            });
+
+            // #########################################################################################################
+            // ## load data when target is in viewport
+            // #########################################################################################################
+
+            $(container).find("div[data-role=container-load-viewport]").each(function (elem) {
+                var source = $(this).attr('data-source');
+                var target = $(this);
+
+                $(target).bind('enterviewport', function(elem){
+                    target.spin();
+                    target.data('role', null);
+
+                    $.get(source, { }, function (result) {
+                        if (result.type == "view") {
+                            target.spin(false);
+                            target.html(result.content);
+                            me.parseMessages(result.messages);
+                            me.parseDataAttributes(target);
+                        }
+                    });
+                }).bullseye();
+            });
+
 
             // #########################################################################################################
             // ## parse all form submits to make forms as dynamic ajax forms with submit actions
@@ -305,6 +375,9 @@ define(["jquery", "bootstrap", "spinjs", "hasher", "growl"], function ($, _boots
 
 
             });
+
+
+            me.fire({ type: "containerRefresh" });
         }
 
         this.handleChangedHash = function (newHash, oldHash) {
@@ -382,6 +455,51 @@ define(["jquery", "bootstrap", "spinjs", "hasher", "growl"], function ($, _boots
             hasher.changed.add(me.handleChangedHash);
             hasher.initialized.add(me.handleInitialHash);
             hasher.init();
+        }
+    };
+
+    cl.prototype  = {
+
+        constructor: cl,
+
+        on: function(type, listener){
+            if (typeof this._listeners[type] == "undefined"){
+                this._listeners[type] = [];
+            }
+
+            this._listeners[type].push(listener);
+        },
+
+        fire: function(event){
+            if (typeof event == "string"){
+                event = { type: event };
+            }
+            if (!event.target){
+                event.target = this;
+            }
+
+            if (!event.type){  //falsy
+                throw new Error("Event object missing 'type' property.");
+            }
+
+            if (this._listeners[event.type] instanceof Array){
+                var listeners = this._listeners[event.type];
+                for (var i=0, len=listeners.length; i < len; i++){
+                    listeners[i].call(this, event);
+                }
+            }
+        },
+
+        off: function(type, listener){
+            if (this._listeners[type] instanceof Array){
+                var listeners = this._listeners[type];
+                for (var i=0, len=listeners.length; i < len; i++){
+                    if (listeners[i] === listener){
+                        listeners.splice(i, 1);
+                        break;
+                    }
+                }
+            }
         }
     };
 

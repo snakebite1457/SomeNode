@@ -1,13 +1,53 @@
+.navbar.navbar-default
+    .container
+        .navbar-header
+            a.navbar-brand.btn-default(href='/videos', data-role="navigate")
+                i.fa.fa-chevron-circle-left.fa-3
+                | &nbsp; Back to Grouping
+        .navbar-collapse.collapse
+            ul.nav.navbar-nav.navbar-right
+                li.dropdown
+                    a#dropdownOptions.dropdown-toggle(data-toggle="dropdown", href='#') Options
+                        span.caret
+                    ul.dropdown-menu(role="menu", aria-labelledby="dropdownOptions")
+                        li(role="presentation")
+                            a(role="menuitem", tabindex="-1", data-toggle='modal', data-target='#modalAddItem')
+                                i.fa.fa-plus &nbsp; Add
+                        li(role="presentation")
+                            a(role="menuitem", tabindex="-1",href="#", disabled="true"
+                            , data-toggle='modal', data-target='#modalDeleteItems')
+                                i.fa.fa-trash-o &nbsp; Delete Selected
+
 .panel-body
-    table.table.table-striped.table-condensed
-        thead
-            tr
-                th Title
-                th ASIN
-                th ean
-        tbody
-            each video in videos
-                tr
-                    td !{video.itemAttributes.title}
-                    td !{video.asin}
-                    td !{video.itemAttributes.ean}
+    each video, i in videos
+        .row(data-selectrow='true', data-deleteid=video._id.toString(), data-deleteurl='/videos/deleteVideo')
+            if i > 0
+                hr
+            .col-md-1
+                img.img-responsive(src="http://ecx.images-amazon.com/images/I/519SgX2wwDL._SL160_.jpg")
+            .col-md-4
+                dl.dl-horizontal
+                    dt
+                        | Title
+                    dd
+                        !{video.itemAttributes.title}
+                    dt
+                        | ASIN
+                    dd
+                        !{video.asin}
+                    dt
+                        | EAN
+                    dd
+                        !{video.itemAttributes.ean}
+            .col-md-6
+                dl.dl-horizontal
+                    dt
+                        | Product Description
+                    dd
+                        | This comedy-adventure centers on Blu, a flightless macaw who acts more human than bird.
+                        | When Blu, the last of his kind, discovers there’s another – and that she’s a she – he embarks
+                        | on an adventure to magical Rio. There, he meets Jewel and a menagerie of vivid characters who
+                        | help Blu fulfill his dream and learn to fly.
+            //.col-md-2.text-right.text-center
+            //    a.btn.btn-primary.btn-danger(src="#")
+            //        i.fa.fa-trash-o &nbsp;Delete Video

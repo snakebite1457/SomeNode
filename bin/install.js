@@ -5,16 +5,16 @@
 
 var config          = require('konphyg')(__dirname + "./../config");
 var mongoose        = require('mongoose');
-var Video           = require('../models/video.js');
-var User            = require('../models/user');
+var Video           = require('../models/movie.js');
+var User            = require('../models/user.js');
 
 var sampleGenre = [ "Action", "Drama", "Horror", "Comedy" ];
 
-mongoose.connect(config("database").subprint);
+mongoose.connect(config("database").subprintDev);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'mongodb connection error: '));
 db.once('open', function callback() {
-    console.log("mongodb connection established to " + config("database").videoUrl);
+    console.log("mongodb connection established to " + config("database").subprintDev);
 
 
 
@@ -26,7 +26,7 @@ db.once('open', function callback() {
 
     });*/
 
-   /* User.findOne({ 'local.email': "admin" }, function (err, user) {
+    User.findOne({ 'local.email': "admin" }, function (err, user) {
         if (err) {
             createVideos();
         } else {
@@ -35,6 +35,7 @@ db.once('open', function callback() {
                 var newUser            = new User();
 
                 // set the user'controllers local credentials
+                newUser.userName       = "Admin";
                 newUser.local.email    = "admin";
                 newUser.local.password = newUser.generateHash("admin");
 
@@ -48,9 +49,9 @@ db.once('open', function callback() {
 
             });
         }
-    });*/
+    });
 
-    createVideos();
+    //createVideos();
 });
 
 

@@ -8,9 +8,10 @@ requirejs.config({
         requirejs: "../components/requirejs/require",
         spinjs: "../components/spinjs/jquery.spin",
         spin: "../components/spinjs/spin",
-        growl: "../components/bootstrap-growl/bootstrap-growl",
+        growl: "../components/bootstrap-growl/bootstrap-growl.min",
         hasher: "../components/hasher/dist/js/hasher",
-        signals: "../components/js-signals/dist/signals"
+        signals: "../components/js-signals/dist/signals",
+        bullseye: "../components/bullseye/jquery.bullseye-1.0"
     },
     shim: {
         bootstrap: {

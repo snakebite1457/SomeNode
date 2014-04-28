@@ -13,9 +13,6 @@ module.exports = function(app, passport) {
         });
     });
 
-	// process the signup form
-	// app.post('/signup', do all our passport stuff here);
-
 	// =====================================
 	// PROFILE SECTION =====================
 	// =====================================
@@ -43,8 +40,6 @@ module.exports = function(app, passport) {
             if (err) {
                 return next(err);
             }
-
-            //TODO: Let Dennis show this freaking shit
 
             if (!user) {
                 req.flash('message','{text: ' + info.message + ', type: "danger"}' );

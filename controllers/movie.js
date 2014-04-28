@@ -1,5 +1,5 @@
 var slingle = require("../common/slingle");
-var Video = require('../models/video');
+var Movie = require('../models/movie');
 var request = require("request");
 var url = require("url");
 var aws = require("aws-lib");
@@ -16,7 +16,7 @@ var internalGroupAttr;
 
 
 function index(req, res) {
-    slingle.view(res, 'videos/index', { }, { });
+    slingle.view(res, 'movies/index', { }, { });
 }
 
 function getAllDistinctAttributes(req, res) {
@@ -28,8 +28,8 @@ function getAllDistinctAttributes(req, res) {
             })
         },
         function(callback) {
-            Video.find().find({'userId': req.session.passport.user}).distinct(internalGroupAttr, function (err, distinctGroups) {
-                slingle.view(res, 'videos/videos', { gAttr: req.query.gAttr, distinctGroups: distinctGroups
+            Movie.find().find({'userId': req.session.passport.user}).distinct(internalGroupAttr, function (err, distinctGroups) {
+                slingle.view(res, 'movies/movies', { gAttr: req.query.gAttr, distinctGroups: distinctGroups
                         , allGAttr: groupAttributes, allSAttr: searchAttributes }
                     , { messages: [{ type: "success", text: "Hey bro " + distinctGroups.length + " Groups found" }]
                 });
@@ -42,7 +42,7 @@ function getAllDistinctAttributes(req, res) {
     });
 }
 
-function getAllVideosPerGroupAttribute(req, res) {
+function getAllMoviesPerGroupAttribute(req, res) {
     async.series([
         function (callback){
             getInternalGroupName(req, function() {
@@ -51,9 +51,9 @@ function getAllVideosPerGroupAttribute(req, res) {
         },
 
         function(callback) {
-            Video.where(internalGroupAttr, req.query.gName).find({'userId': req.session.passport.user}, function (err, videos) {
-                slingle.view(res, 'videos/videoDetails', { videos: videos }
-                    , { messages: [{ type: "success", text: "Hey bro " + videos.length + " Videos found"}]
+            Movie.where(internalGroupAttr, req.query.gName).find({'userId': req.session.passport.user}, function (err, videos) {
+                slingle.view(res, 'movies/movieDetails', { videos: videos }
+                    , { messages: [{ type: "success", text: "Hey bro " + videos.length + " Movies found"}]
                 });
                 callback();
             });
@@ -64,19 +64,37 @@ function getAllVideosPerGroupAttribute(req, res) {
     });
 }
 
-function addVideo(req, res) {
+function addMovie(req, res) {
 
+    Movie.count({ asin: req.body.asin }, function(err, count){
+        Movie.count({ userid: req.session.passport.user }, function(err, count) {
+
+            if (count > 0) {
+                Movie.findOneAndUpdate(
+                    { asin: req.body.asin },
+                    { $push: { userId: req.session.passport.user } },
+                    function (err, org) {
+                        if (err) {
+                            console.log(err);
+                            res.send(null, 500);
+                        } else {
+                            res.send(null, 200);
+                        }
+                    });
+            }
+        });
+    });
 }
 
 
 
 
 
-function searchVideo(req, res) {
+function searchMovie(req, res) {
 
-    Video.find({ }, function (err, videos) {
-        slingle.view(res, 'videos/searchResult', { videos: videos }
-            , { messages: [{ type: "success", text: "Hey bro " + videos.length + " Videos found"}]
+    Movie.find({ }, function (err, videos) {
+        slingle.view(res, 'movies/searchResult', { videos: videos }
+            , { messages: [{ type: "success", text: "Hey bro " + videos.length + " Movies found"}]
             });
     });
 
@@ -97,9 +115,9 @@ function searchVideo(req, res) {
 
 }
 
-function deleteVideo(req, res) {
+function deleteMovie(req, res) {
 
-    Video.findOneAndUpdate(
+    Movie.findOneAndUpdate(
         { _id: req.body.id },
         { $pull: { userId:  req.session.passport.user } },
         function(err, org) {
@@ -136,14 +154,14 @@ function getInternalGroupName(req, callback){
 }
 
 module.exports = function (app) {
-    app.get('/videos', isLoggedIn, index);
-    app.get('/videos/gGAttr',  isLoggedIn, getAllDistinctAttributes);
-    app.get('/videos/gVGAttr', isLoggedIn, getAllVideosPerGroupAttribute);
+    app.get('/movies', isLoggedIn, index);
+    app.get('/movies/gGAttr',  isLoggedIn, getAllDistinctAttributes);
+    app.get('/movies/gVGAttr', isLoggedIn, getAllMoviesPerGroupAttribute);
 
-    app.post('/videos/addVideo', isLoggedIn, addVideo);
-    app.get('/videos/searchVideo', isLoggedIn, searchVideo);
+    app.post('/movies/addVideo', isLoggedIn, addMovie);
+    app.get('/movies/searchVideo', isLoggedIn, searchMovie);
 
-    app.post('/videos/deleteVideo', isLoggedIn, deleteVideo);
+    app.post('/movies/deleteVideo', isLoggedIn, deleteMovie);
 
 };
 

@@ -1,12 +1,89 @@
-//
-   Created by dennis on 4/1/14.
 
-.container
-    .row
-        each item in data
-            .panel-group(id = 'accordion' + item)
-                .panel.panel-default
-                    .panel-heading
-                        //img(src='http://placehold.it/100x30', alt='country flag', style='float: left; margin: 3px 10px 0 3px; text-align: center;')
-                        a.accordion-toggle(data-toggle='collapse', href='#collapse' + item, data-parent='#accordion' + item) !{item}
-                    div(id = 'collapse' + item, data-role='container', data-source='/videos/getAllVideosPerGenre?value=' + item + '&videoSearchAttr=' + videoSearchAttr).apanel-collapse.collapse
+
+
+.navbar.navbar-default
+    .container
+        .navbar-header
+            .navbar-brand Videos
+        .navbar-collapse.collapse
+            ul.nav.navbar-nav.navbar-right
+                li.dropdown
+                    a#dropdownOptions.dropdown-toggle(data-toggle="dropdown", href='#') Options
+                        span.caret
+                    ul.dropdown-menu(role="menu", aria-labelledby="dropdownOptions")
+                        li(role="presentation")
+                            a(role="menuitem", tabindex="-1", href='#' data-toggle='modal', data-target='#modalAddItem')
+                                i.fa.fa-plus &nbsp; Add
+                        li(role="presentation")
+                            a(role="menuitem", tabindex="-1", href='#')
+                                i.fa.fa-info &nbsp; Info
+
+
+                //label
+                //    | Options &nbsp;
+                //span.btn-group-responsive.btn-group
+                //    a.btn.btn-default(href="#",
+                //    , data-toggle='modal', data-target='#modalAddItem')
+                //        i.fa.fa-plus &nbsp; Add
+                //    a.btn.btn-default(href="#")
+                //        i.fa.fa-info &nbsp; Info
+
+                li.dropdown
+                    a#dropdownGrouping.dropdown-toggle(data-toggle="dropdown", href='#') Grouping
+                        span.caret
+                    ul.dropdown-menu(role="menu", aria-labelledby="dropdownGrouping")
+                        each grouping in allGAttr
+                            li(role="presentation")
+                                a(role="menuitem", tabindex="-1"
+                                , data-role="container-reload", data-source='/videos/gGAttr?gAttr=' + grouping
+                                , data-container="#videoContainer") !{grouping}
+
+            //label
+            //    | Grouping &nbsp;
+            //span.btn-group-responsive.btn-group(data-toggle='buttons')
+            //    each grouping in allGAttr
+            //        a.btn.btn-default.btn-small(class= grouping == gAttr ? 'active' : ''
+            //        , data-role="container-reload", data-source='/videos/gGAttr?gAttr=' + grouping
+            //        , data-container="#videoContainer")
+            //            input(type='radio', name='options')
+            //            | !{grouping}
+
+.row
+    .container
+        .row#videoGroupsContainer
+            .list-group.gallery
+                each group , i in distinctGroups
+                    .col-sm-4.col-xs-6.col-md-3.col-lg-3
+                        a.btn.btn-default(rel="lightbox"
+                       , data-role="container-reload"
+                       , data-source='/videos/gVGAttr?gName=' + group
+                       , data-container='#videoContainer')
+                            img.img-responsive(alt=""
+                            , src="http://ecx.images-amazon.com/images/I/419m%2B1X972L._PI_PJStripeHD-Prime-500px02,TopLeft,0,0_AA280_.jpg")
+                            h3.text-center !{group}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //.panel-group(id = 'accordion' + i)
+            //    .panel.panel-default
+            //        .panel-heading
+            //            //img(src='http://placehold.it/100x30', alt='country flag', style='float: left; margin: 3px 10px 0 3px; text-align: center;')
+            //            a.accordion-toggle(data-toggle='collapse', href='#collapse' + i
+            //            , data-parent='#accordion' + i, data-role="container-reload"
+            //            , data-source='/videos/gVGAttr?gName=' + group
+            //            , data-container='#collapse' + i, data-reload-once='true') !{group}
+            //        div(id = 'collapse' + i).apanel-collapse.collapse

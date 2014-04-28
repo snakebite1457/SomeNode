@@ -40,7 +40,7 @@ jQuery.fn.bullseye = function (settings, viewport) {
 
             // Element is inside the viewport
             var insideViewport = function () {
-                if (!isFocused($element)) {
+                if (!isFocused($element) && $element.is('.in')) {
                     setFocused($element);
 
                     $element.trigger('enterviewport');

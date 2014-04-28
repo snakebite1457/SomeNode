@@ -1,3 +1,15 @@
 //
    Created by dennismeyer on 10.04.14.
 
+table.table
+    tr
+        th
+        th Title
+        th ASIN
+    each video in videos
+        tr
+           td
+            a.btn-circle
+                i.fa.fa-plus-circle
+           td !{video.itemAttributes.title}
+           td !{video.asin}

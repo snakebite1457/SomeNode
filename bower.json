@@ -23,6 +23,7 @@
     "requirejs": "~2.1.11",
     "spinjs": "~2.0.0",
     "require-css": "~0.1.2",
-    "bootstrap-growl": "~1.0.6"
+    "bootstrap-growl": "~1.0.6",
+    "colorbox": "~1.5.6"
   }
 }

@@ -11,14 +11,6 @@ var lessMiddleware = require('less-middleware');
 var config         = require('konphyg')(__dirname + "/config");
 var app            = express();
 
-// test db acces ===============================================================
-mongoose.connect(config("database").subprint);
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'mongodb connection error: '));
-db.once('open', function callback() {
-    console.log("mongodb connection established to " + config("database").subprint);
-});
-
 require('./api/passport')(passport); // pass passport for configuration
 
 app.set('port', config("server").port);
@@ -31,7 +23,6 @@ app.use(express.urlencoded());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('keyboard cat'));
-app.use(express.session({ cookie: { maxAge: 60000 }}));
 app.use(lessMiddleware(__dirname + '/client'));
 app.use(express.static(__dirname + '/client'));
 app.set("jsonp callback", true);
@@ -46,10 +37,26 @@ app.use(app.router);
 
 app.configure('development', function () {
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+
+    // test db acces ===============================================================
+    mongoose.connect(config("database").subprintDev);
+    var db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'mongodb connection error: '));
+    db.once('open', function callback() {
+        console.log("mongodb connection established to " + config("database").subprintDev);
+    });
 });
 
 app.configure('production', function () {
     app.use(express.errorHandler());
+
+    // test db acces ===============================================================
+    mongoose.connect(config("database").subprint);
+    var db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'mongodb connection error: '));
+    db.once('open', function callback() {
+        console.log("mongodb connection established to " + config("database").subprint);
+    });
 });
 
 app.listen(config("server").port, function () {
@@ -57,4 +64,4 @@ app.listen(config("server").port, function () {
 });
 
 // routes ======================================================================
-require('./controllers')(app, passport); // load our routes and pass in our app and fully configured passport
+require('./controllers')(app, passport);

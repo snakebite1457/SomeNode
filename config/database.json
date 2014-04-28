@@ -1,3 +1,4 @@
 {
-    "subprint" : "mongodb://localhost:27017/subprint"
+    "subprint": "mongodb://nodejitsu:12c7da027622c9d9bd314cc13d30fe4e@troup.mongohq.com:10096/nodejitsudb314240320",
+    "subprintDev" : "mongodb://localhost:27017/subprint"
 }
