@@ -1,0 +1,59 @@
+
+
+.jumbotron(style='margin-top:20px')
+    .container
+        h1 Hello User!
+        p
+            | This is your video area. Here can you see all of your videos. You can add additional videos or remove and modify it. Have fun bro ;)
+        p
+            a.btn.btn-primary.btn-lg(role='button') Learn more »
+
+#videoContainer(data-role='container', data-source='/videos/gGAttr?gAttr=' + gAttr)
+
+
+    #modalDeleteItems.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modalRegisterLabel', aria-hidden='true')
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                    h4#modalRegisterLabel.modal-title Delete Items
+                .modal-body
+                    p You really want to delete the selected items?
+                .modal-footer
+                    button.btn.btn-default(type='button', data-dismiss='modal') No
+                    button#btn-deleteItemsFinally.btn.btn-default(type='button', data-dismiss='modal'
+                    , data-source='/videos/gGAttr?gAttr=genre'
+                    , data-container="#videoContainer") Yes
+
+
+
+    #modalAddItem.modal.fade(tabindex='-1', role='dialog', aria-labelledby='modalRegisterLabel', aria-hidden='true')
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                    h4#modalRegisterLabel.modal-title Add Item
+                .modal-body
+                    form#modalAddItemForm.form-horizontal(role='form')
+                        .form-group
+                            label.col-sm-2.control-label(for='inputTitle') Title
+                            .col-sm-10
+                                input.form-control(type='text', placeholder='Title')
+                        .form-group.hide(data-hide='true')
+                            label.col-sm-2.control-label(for='inputTitle') Actor
+                            .col-sm-10
+                                input.form-control(type='text', placeholder='Title')
+                        .form-group.hide(data-hide='true')
+                            label.col-sm-2.control-label(for='inputTitle') Studio
+                            .col-sm-10
+                                input.form-control(type='text', placeholder='Title')
+                        .form-group
+                            .col-sm-offset-10
+                                a.btn.btn-default(data-role="container-reload", data-form="#modalAddItemForm"
+                                , data-source="/videos/searchVideo", data-container="#seachContainer") Search
+                        .form-group
+                            .pull-right
+                                a#searchFurtherOptions.btn.btn-link Further search options
+                    div#seachContainer
+                .modal-footer
+                    button.btn.btn-default(type='button', data-dismiss='modal') Close

@@ -1,14 +1,15 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = mongoose.Schema.ObjectId;
+    User = require('./user');
 
 // define the schema for our user model
-var videoSchema = mongoose.Schema({
+var movieSchema = mongoose.Schema({
 
     asin            : String,
     detailsPageUrl  : String,
 
-    userId: [Schema.Types.ObjectId],
+    userId: [{ type: ObjectId, ref: 'User' }],
     itemAttributes: {
         ean: { type: String, lowercase: true, trim: true },
         title: { type: String, lowercase: true, trim: true },
@@ -16,4 +17,6 @@ var videoSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Video', videoSchema);
+module.exports = mongoose.model('Movie', movieSchema);
+
+
